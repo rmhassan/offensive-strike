@@ -12,7 +12,7 @@ module.exports = {
   // Path and filename of your result bundle.
   // Webpack will bundle all JavaScript into this file
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "docs"),
     filename: "bundle.js"
   },
   module: {
@@ -62,7 +62,7 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: path.resolve(__dirname, "dist"),
+    contentBase: path.resolve(__dirname, "docs"),
     publicPath: "/",
     watchContentBase: true
   },

@@ -1,14 +1,15 @@
 import "../sass/main.scss";
 
-import grid from "./component/map";
+import createGrid from "./component/map";
+let circle = document.createElement("div");
+let position = { x: 0, y: 0 };
 const keys = {
   left: 37,
   up: 38,
   right: 39,
   down: 40
 };
-grid(16, 16);
-let circle = document.createElement("div");
+createGrid(16, 16);
 circle.style.width = "20px";
 circle.style.height = "20px";
 circle.style.backgroundColor = "#000";
@@ -22,19 +23,23 @@ function moveRight(e) {
 function handleKey(e) {
   switch (e.keyCode) {
     case keys.left:
-      console.log("left ");
+      position.y--;
       break;
     case keys.up:
-      console.log("up ");
+      position.x--;
       break;
 
     case keys.right:
-      moveRight(e);
+      position.y++;
       break;
 
     case keys.down:
-      console.log("down ");
+      position.x++;
       break;
   }
+  let gridItem = document.querySelector(
+    ".grid-item-" + position.x + "" + position.y
+  );
+  gridItem.appendChild(circle);
 }
 window.addEventListener("keydown", handleKey);
