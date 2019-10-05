@@ -1,5 +1,8 @@
 body {
-  background-color: orange;
+  background: lightblue;
 }
 
-@import "./components/map";
+canvas {
+  background: #fff;
+  margin: 20px;
+}

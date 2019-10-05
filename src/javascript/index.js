@@ -1,45 +1,33 @@
 import "../sass/main.scss";
 
-import createGrid from "./component/map";
-let circle = document.createElement("div");
-let position = { x: 0, y: 0 };
-const keys = {
-  left: 37,
-  up: 38,
-  right: 39,
-  down: 40
-};
-createGrid(16, 16);
-circle.style.width = "20px";
-circle.style.height = "20px";
-circle.style.backgroundColor = "#000";
-let firstGridItem = document.querySelector(".grid-item");
-firstGridItem.appendChild(circle);
-let gridNodes = document.querySelectorAll(".grid-item");
-let gridArray = Array.from(gridNodes);
-function moveRight(e) {
-  console.log(gridArray);
-}
-function handleKey(e) {
-  switch (e.keyCode) {
-    case keys.left:
-      position.y--;
-      break;
-    case keys.up:
-      position.x--;
-      break;
+//grid width and height
+let bw = 400;
+let bh = 400;
+//padding around grid
+let p = 10;
+//size of canvas
+let cw = bw + p * 2 + 1;
+let ch = bh + p * 2 + 1;
 
-    case keys.right:
-      position.y++;
-      break;
+let canvas = document.querySelector("#canvas");
+canvas.width = cw;
+canvas.height = ch;
 
-    case keys.down:
-      position.x++;
-      break;
+let context = canvas.getContext("2d");
+
+function drawBoard() {
+  for (let x = 0; x <= bw; x += 40) {
+    context.moveTo(0.5 + x + p, p);
+    context.lineTo(0.5 + x + p, bh + p);
   }
-  let gridItem = document.querySelector(
-    ".grid-item-" + position.x + "" + position.y
-  );
-  gridItem.appendChild(circle);
+
+  for (let x = 0; x <= bh; x += 40) {
+    context.moveTo(p, 0.5 + x + p);
+    context.lineTo(bw + p, 0.5 + x + p);
+  }
+
+  context.strokeStyle = "black";
+  context.stroke();
 }
-window.addEventListener("keydown", handleKey);
+
+drawBoard();
