@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/sass/main.scss"],"names":[],"mappings":"AAAA,KAAK,mBAAmB,OAAO,gBAAgB,Y","file":"bundle.css","sourcesContent":["body{background:#add8e6}canvas{background:#fff;margin:20px}"],"sourceRoot":""}
