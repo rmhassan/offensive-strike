@@ -1,7 +1,22 @@
+const arrowKeysCode = {
+  left: 37,
+  up: 38,
+  right: 39,
+  down: 40
+};
+let playerPosition = {
+  x: 0,
+  y: 0
+};
+let playerIndexPosition = { row: 0, col: 0 };
+
+// Initiate Canvas
 let canvas = document.querySelector("#canvas");
 canvas.width = 120;
 canvas.height = 120;
 let ctx = canvas.getContext("2d");
+
+// This array will decide the box will be blocked or not
 let mapArray = [
   [false, false, false],
   [false, false, true],
@@ -15,6 +30,7 @@ let mapArray = [
 //   }
 //   mapArray.push(subArray);
 // }
+//// Drwa Grid
 let ypos = 0;
 for (let i = 0; i < 3; i++) {
   let xpos = 0;
@@ -32,3 +48,62 @@ for (let i = 0; i < 3; i++) {
   }
   ypos += 40;
 }
+
+// Draw player to grid
+const drawPlayer = (xPosition, yPosition) => {
+  ctx.beginPath();
+  ctx.moveTo(xPosition, yPosition);
+  ctx.fillStyle = "#2f2f2f";
+  ctx.fillRect(xPosition + 10, yPosition + 10, 20, 20);
+  console.log(playerIndexPosition);
+};
+drawPlayer(playerPosition.x, playerPosition.y);
+
+window.addEventListener("keydown", e => {
+  switch (e.keyCode) {
+    case arrowKeysCode.left:
+      if (
+        !mapArray[playerIndexPosition.row][playerIndexPosition.col - 1] &&
+        playerIndexPosition.col > 0
+      ) {
+        ctx.clearRect(playerPosition.x + 10, playerPosition.y + 10, 20, 20);
+        playerPosition.x -= 40;
+        playerIndexPosition.col -= 1;
+        drawPlayer(playerPosition.x, playerPosition.y);
+      }
+      break;
+    case arrowKeysCode.up:
+      if (
+        !mapArray[playerIndexPosition.row - 1][playerIndexPosition.col] &&
+        playerIndexPosition.row > 0
+      ) {
+        ctx.clearRect(playerPosition.x + 10, playerPosition.y + 10, 20, 20);
+        playerPosition.y -= 40;
+        playerIndexPosition.row -= 1;
+        drawPlayer(playerPosition.x, playerPosition.y);
+      }
+      break;
+    case arrowKeysCode.right:
+      if (
+        !mapArray[playerIndexPosition.row][playerIndexPosition.col + 1] &&
+        playerIndexPosition.col < mapArray[playerIndexPosition.row].length - 1
+      ) {
+        ctx.clearRect(playerPosition.x + 10, playerPosition.y + 10, 20, 20);
+        playerPosition.x += 40;
+        playerIndexPosition.col += 1;
+        drawPlayer(playerPosition.x, playerPosition.y);
+      }
+      break;
+    case arrowKeysCode.down:
+      if (
+        !mapArray[playerIndexPosition.row + 1][playerIndexPosition.col] &&
+        playerIndexPosition.row < mapArray.length - 1
+      ) {
+        ctx.clearRect(playerPosition.x + 10, playerPosition.y + 10, 20, 20);
+        playerPosition.y += 40;
+        playerIndexPosition.row += 1;
+        drawPlayer(playerPosition.x, playerPosition.y);
+      }
+      break;
+  }
+});
