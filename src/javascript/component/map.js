@@ -10,7 +10,7 @@ let playerPosition = {
 };
 let playerIndexPosition = { row: 0, col: 0 };
 
-// Initiate Canvas
+// Initiate Canvas board
 let canvas = document.querySelector("#canvas");
 canvas.width = 120;
 canvas.height = 120;
