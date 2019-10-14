@@ -1,3 +1,8 @@
+// get random number
+let min = 0;
+let max = 2;
+const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
+
 const arrowKeysCode = {
   left: 37,
   up: 38,
@@ -9,7 +14,7 @@ let playerPosition = {
   y: 0
 };
 let playerIndexPosition = { row: 0, col: 0 };
-
+let random_boolean = () => Math.random() <= 0.1;
 // Initiate Canvas board
 let canvas = document.querySelector("#canvas");
 canvas.width = 120;
@@ -17,19 +22,15 @@ canvas.height = 120;
 let ctx = canvas.getContext("2d");
 
 // This array will decide the box will be blocked or not
-let mapArray = [
-  [false, false, false],
-  [false, false, true],
-  [true, false, false]
-];
+let mapArray = [];
 
-// for (let i = 0; i < 3; i++) {
-//   let subArray = [];
-//   for (let j = 0; j < 3; j++) {
-//     subArray.push(true);
-//   }
-//   mapArray.push(subArray);
-// }
+for (let i = 0; i < 3; i++) {
+  let subArray = [];
+  for (let j = 0; j < 3; j++) {
+    subArray.push(random_boolean());
+  }
+  mapArray.push(subArray);
+}
 //// Drwa Grid
 let ypos = 0;
 for (let i = 0; i < 3; i++) {
@@ -55,10 +56,31 @@ const drawPlayer = (xPosition, yPosition) => {
   ctx.moveTo(xPosition, yPosition);
   ctx.fillStyle = "#2f2f2f";
   ctx.fillRect(xPosition + 10, yPosition + 10, 20, 20);
-  console.log(playerIndexPosition);
 };
-drawPlayer(playerPosition.x, playerPosition.y);
-
+const determinePlayerPosition = () => {
+  let rowPosition = randomNumber();
+  let colPosition = randomNumber();
+  console.log(rowPosition, colPosition);
+  if (!mapArray[rowPosition][colPosition]) {
+    if (rowPosition > 0) {
+      for (let i = 0; i < rowPosition; i++) {
+        playerPosition.y += 40;
+      }
+    }
+    if (colPosition > 0) {
+      for (let j = 0; j < colPosition; j++) {
+        playerPosition.x += 40;
+      }
+    }
+    playerIndexPosition.row = rowPosition;
+    playerIndexPosition.col = colPosition;
+    drawPlayer(playerPosition.x, playerPosition.y);
+  } else {
+    return determinePlayerPosition();
+  }
+};
+determinePlayerPosition();
+//// Arrow keys event listener
 window.addEventListener("keydown", e => {
   switch (e.keyCode) {
     case arrowKeysCode.left:
