@@ -17,25 +17,25 @@ let playerIndexPosition = { row: 0, col: 0 };
 let random_boolean = () => Math.random() <= 0.1;
 // Initiate Canvas board
 let canvas = document.querySelector("#canvas");
-canvas.width = 120;
-canvas.height = 120;
+canvas.width = 400;
+canvas.height = 400;
 let ctx = canvas.getContext("2d");
 
 // This array will decide the box will be blocked or not
 let mapArray = [];
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i <= 9; i++) {
   let subArray = [];
-  for (let j = 0; j < 3; j++) {
+  for (let j = 0; j <= 9; j++) {
     subArray.push(random_boolean());
   }
   mapArray.push(subArray);
 }
 //// Drwa Grid
 let ypos = 0;
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i <= 9; i++) {
   let xpos = 0;
-  for (let j = 0; j < 3; j++) {
+  for (let j = 0; j <= 9; j++) {
     ctx.beginPath();
     ctx.moveTo(xpos, ypos);
     if (mapArray[i][j] === true) {
