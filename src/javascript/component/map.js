@@ -1,6 +1,6 @@
 // get random number
 let min = 0;
-let max = 2;
+let max = 9;
 const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const arrowKeysCode = {
@@ -32,8 +32,10 @@ for (let i = 0; i <= 9; i++) {
   mapArray.push(subArray);
 }
 //// Drwa Grid
+// Y pointer at the beginning
 let ypos = 0;
 for (let i = 0; i <= 9; i++) {
+  // X pointer at the beginning
   let xpos = 0;
   for (let j = 0; j <= 9; j++) {
     ctx.beginPath();
@@ -45,8 +47,10 @@ for (let i = 0; i <= 9; i++) {
       ctx.strokeStyle = "#000000";
       ctx.strokeRect(xpos, ypos, 40, 40);
     }
+    /// Increment x pointer by 40px after every iteration
     xpos += 40;
   }
+  /// Increment y pointer by 40px after every iteration
   ypos += 40;
 }
 
@@ -58,28 +62,38 @@ const drawPlayer = (xPosition, yPosition) => {
   ctx.fillRect(xPosition + 10, yPosition + 10, 20, 20);
 };
 const determinePlayerPosition = () => {
+  // Get random row and col indexes for they player position
   let rowPosition = randomNumber();
   let colPosition = randomNumber();
-  console.log(rowPosition, colPosition);
+  // Check if the cell is blocked or not
   if (!mapArray[rowPosition][colPosition]) {
+    // Check if it is first row
     if (rowPosition > 0) {
+      // if the row is greater than one increment y pointer 40*noOfRows
       for (let i = 0; i < rowPosition; i++) {
         playerPosition.y += 40;
       }
     }
+    // Check if it is first col
     if (colPosition > 0) {
+      // if the col is greater than one increment x pointer 40*noOfCols
       for (let j = 0; j < colPosition; j++) {
         playerPosition.x += 40;
       }
     }
+    // Updating player index position
     playerIndexPosition.row = rowPosition;
     playerIndexPosition.col = colPosition;
-    drawPlayer(playerPosition.x, playerPosition.y);
   } else {
+    // If 'if' condition fails this function will be called again. Recursive function
     return determinePlayerPosition();
   }
 };
+
+// Determine and draw player onto map
 determinePlayerPosition();
+// Calling function to draw player onto the map
+drawPlayer(playerPosition.x, playerPosition.y);
 //// Arrow keys event listener
 window.addEventListener("keydown", e => {
   switch (e.keyCode) {
