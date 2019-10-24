@@ -1,11 +1,11 @@
 import { mapArray } from "./map";
-console.log(mapArray);
 let min = 0;
 let max = 9;
 const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 export default class Weapons {
-  constructor(damage) {
+  constructor(damage, id) {
     this.damage = damage;
+    this.id = id;
     this.canvasPosition = {
       x: 0,
       y: 0
