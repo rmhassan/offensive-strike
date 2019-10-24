@@ -3,7 +3,11 @@ let min = 0;
 let max = 9;
 const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 class Player {
-  constructor() {
+  constructor(color, damage, weapon = {}) {
+    this.color = color;
+    this.damage = damage;
+    this.hasWeapon = false;
+    this.weapon = weapon;
     this.position = {
       x: 0,
       y: 0
@@ -41,6 +45,16 @@ class Player {
       }
     };
     this.init();
+  }
+  updatePlayerProperties(color, damage) {
+    this.color = color;
+    this.damage += damage;
+  }
+  updatePlayerWeapon(weapon) {
+    this.weapon = weapon;
+  }
+  updateWeaponState() {
+    this.hasWeapon = true;
   }
 }
 

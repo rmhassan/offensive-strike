@@ -4,13 +4,13 @@ import drawGrid, { mapArray, ctx } from "./component/map";
 import { drawPlayer, drawWeapon } from "./component/draw";
 import Player from "./component/player";
 import Weapons from "./component/weapons";
+import "./component/playground";
 
-const m4 = new Weapons(90, 1);
-const g3 = new Weapons(60, 2);
-const ump = new Weapons(50, 3);
-const kar98 = new Weapons(95, 4);
+const m4 = new Weapons("#27ae60", 90, 1);
+const g3 = new Weapons("#f39c12", 60, 2);
+const ump = new Weapons("#8e44ad", 50, 3);
+const kar98 = new Weapons("#c0392b", 95, 4);
 const weaponPosition = [m4, g3, ump, kar98];
-console.log(weaponPosition);
 drawWeapon(m4);
 drawWeapon(g3);
 drawWeapon(ump);
@@ -27,19 +27,19 @@ const arrowKeysCode = {
 drawGrid();
 
 // Create new Player
-const player1 = new Player();
+const player1 = new Player("#34495e", 100);
+console.log(player1);
 
 const chkWeapon = () => {
   return weaponPosition.findIndex(weapon => {
-    console.log(weapon, player1.indexPosition);
     return (
-      player1.indexPosition.row === weapon.row &&
-      player1.indexPosition.col === weapon.col
+      player1.indexPosition.row === weapon.indexPosition.row &&
+      player1.indexPosition.col === weapon.indexPosition.col
     );
   });
 };
 // Draw player to canvas
-drawPlayer(player1.position.x, player1.position.y);
+drawPlayer(player1);
 
 // Event listener for the arrow keys
 window.addEventListener("keydown", e => {
@@ -52,8 +52,24 @@ window.addEventListener("keydown", e => {
         ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
         player1.position.x -= 40;
         player1.indexPosition.col -= 1;
-
-        drawPlayer(player1.position.x, player1.position.y);
+        let weaponIndex = chkWeapon();
+        if (weaponIndex > -1) {
+          let weapon = weaponPosition[weaponIndex];
+          player1.updatePlayerProperties(weapon.color, weapon.damage);
+          if (player1.hasWeapon) {
+            weaponPosition.push(player1.weapon);
+            // console.log(player1.weapon);
+            // drawWeapon(player1.weapon);
+            player1.updatePlayerWeapon(weapon);
+          } else {
+            player1.updateWeaponState();
+            player1.updatePlayerWeapon(weapon);
+            weaponPosition.splice(weaponIndex, 1);
+          }
+          drawPlayer(player1);
+        } else {
+          drawPlayer(player1);
+        }
       }
       break;
     case arrowKeysCode.up:
@@ -64,7 +80,23 @@ window.addEventListener("keydown", e => {
         ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
         player1.position.y -= 40;
         player1.indexPosition.row -= 1;
-        drawPlayer(player1.position.x, player1.position.y);
+        let weaponIndex = chkWeapon();
+        if (weaponIndex > -1) {
+          let weapon = weaponPosition[weaponIndex];
+          player1.updatePlayerProperties(weapon.color, weapon.damage);
+          if (player1.hasWeapon) {
+            weaponPosition.push(player1.weapon);
+
+            player1.updatePlayerWeapon(weapon);
+          } else {
+            player1.updateWeaponState();
+            player1.updatePlayerWeapon(weapon);
+            weaponPosition.splice(weaponIndex, 1);
+          }
+          drawPlayer(player1);
+        } else {
+          drawPlayer(player1);
+        }
       }
       break;
     case arrowKeysCode.right:
@@ -76,8 +108,24 @@ window.addEventListener("keydown", e => {
         ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
         player1.position.x += 40;
         player1.indexPosition.col += 1;
+        let weaponIndex = chkWeapon();
+        if (weaponIndex > -1) {
+          let weapon = weaponPosition[weaponIndex];
+          player1.updatePlayerProperties(weapon.color, weapon.damage);
+          if (player1.hasWeapon) {
+            weaponPosition.push(player1.weapon);
 
-        drawPlayer(player1.position.x, player1.position.y);
+            player1.updatePlayerWeapon(weapon);
+          } else {
+            player1.updateWeaponState();
+            player1.updatePlayerWeapon(weapon);
+            weaponPosition.splice(weaponIndex, 1);
+          }
+
+          drawPlayer(player1);
+        } else {
+          drawPlayer(player1);
+        }
       }
       break;
     case arrowKeysCode.down:
@@ -88,8 +136,24 @@ window.addEventListener("keydown", e => {
         ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
         player1.position.y += 40;
         player1.indexPosition.row += 1;
+        let weaponIndex = chkWeapon();
+        if (weaponIndex > -1) {
+          let weapon = weaponPosition[weaponIndex];
+          player1.updatePlayerProperties(weapon.color, weapon.damage);
+          if (player1.hasWeapon) {
+            weaponPosition.push(player1.weapon);
+            player1.updatePlayerWeapon(weapon);
+          } else {
+            player1.updateWeaponState();
+            player1.updatePlayerWeapon(weapon);
+            weaponPosition.splice(weaponIndex, 1);
+          }
+          console.log(weaponPosition);
 
-        drawPlayer(player1.position.x, player1.position.y);
+          drawPlayer(player1);
+        } else {
+          drawPlayer(player1);
+        }
       }
       break;
   }

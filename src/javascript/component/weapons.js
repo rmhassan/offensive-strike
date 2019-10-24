@@ -3,7 +3,8 @@ let min = 0;
 let max = 9;
 const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 export default class Weapons {
-  constructor(damage, id) {
+  constructor(color, damage, id) {
+    this.color = color;
     this.damage = damage;
     this.id = id;
     this.canvasPosition = {
