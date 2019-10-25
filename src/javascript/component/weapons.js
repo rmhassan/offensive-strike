@@ -45,4 +45,8 @@ export default class Weapons {
     };
     this.init();
   }
+  updateWeaponPosition(canvasPosition, indexPosition) {
+    this.canvasPosition = canvasPosition;
+    this.indexPosition = indexPosition;
+  }
 }
