@@ -14,7 +14,8 @@ drawWeapon(m4);
 drawWeapon(g3);
 drawWeapon(ump);
 drawWeapon(kar98);
-
+const offset = 80;
+const padding = 20;
 const arrowKeysCode = {
   left: 37,
   up: 38,
@@ -68,8 +69,13 @@ window.addEventListener("keydown", e => {
         !mapArray[player1.indexPosition.row][player1.indexPosition.col - 1] &&
         player1.indexPosition.col > 0
       ) {
-        ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
-        player1.position.x -= 40;
+        ctx.clearRect(
+          player1.position.x + padding,
+          player1.position.y + padding,
+          50,
+          50
+        );
+        player1.position.x -= offset;
         player1.indexPosition.col -= 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
@@ -85,8 +91,13 @@ window.addEventListener("keydown", e => {
         !mapArray[player1.indexPosition.row - 1][player1.indexPosition.col] &&
         player1.indexPosition.row > 0
       ) {
-        ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
-        player1.position.y -= 40;
+        ctx.clearRect(
+          player1.position.x + padding,
+          player1.position.y + padding,
+          50,
+          50
+        );
+        player1.position.y -= offset;
         player1.indexPosition.row -= 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
@@ -103,8 +114,13 @@ window.addEventListener("keydown", e => {
         player1.indexPosition.col <
           mapArray[player1.indexPosition.row].length - 1
       ) {
-        ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
-        player1.position.x += 40;
+        ctx.clearRect(
+          player1.position.x + padding,
+          player1.position.y + padding,
+          50,
+          50
+        );
+        player1.position.x += offset;
         player1.indexPosition.col += 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
@@ -120,8 +136,13 @@ window.addEventListener("keydown", e => {
         !mapArray[player1.indexPosition.row + 1][player1.indexPosition.col] &&
         player1.indexPosition.row < mapArray.length - 1
       ) {
-        ctx.clearRect(player1.position.x + 10, player1.position.y + 10, 20, 20);
-        player1.position.y += 40;
+        ctx.clearRect(
+          player1.position.x + padding,
+          player1.position.y + padding,
+          50,
+          50
+        );
+        player1.position.y += offset;
         player1.indexPosition.row += 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
@@ -134,3 +155,5 @@ window.addEventListener("keydown", e => {
       break;
   }
 });
+
+export { padding };

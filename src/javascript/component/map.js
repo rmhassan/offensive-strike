@@ -7,7 +7,7 @@ const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 //   left: 37,
 //   up: 38,
 //   right: 39,
-//   down: 40
+//   down: 80
 // };
 // let playerPosition = {
 //   x: 0,
@@ -17,16 +17,16 @@ const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 let random_boolean = () => Math.random() <= 0.1;
 // Initiate Canvas board
 let canvas = document.querySelector("#canvas");
-canvas.width = 400;
-canvas.height = 400;
+canvas.width = 1280;
+canvas.height = 720;
 let ctx = canvas.getContext("2d");
 
 // This array  decide the box will be blocked or not
 let mapArray = [];
 
-for (let i = 0; i <= 9; i++) {
+for (let i = 0; i <= 8; i++) {
   let subArray = [];
-  for (let j = 0; j <= 9; j++) {
+  for (let j = 0; j <= 15; j++) {
     subArray.push(random_boolean());
   }
   mapArray.push(subArray);
@@ -35,24 +35,24 @@ for (let i = 0; i <= 9; i++) {
 const drawGrid = () => {
   // Y pointer at the beginning
   let ypos = 0;
-  for (let i = 0; i <= 9; i++) {
+  for (let i = 0; i <= 8; i++) {
     // X pointer at the beginning
     let xpos = 0;
-    for (let j = 0; j <= 9; j++) {
+    for (let j = 0; j <= 15; j++) {
       ctx.beginPath();
       ctx.moveTo(xpos, ypos);
       if (mapArray[i][j] === true) {
         ctx.fillStyle = "#FF0000";
-        ctx.fillRect(xpos, ypos, 40, 40);
+        ctx.fillRect(xpos, ypos, 80, 80);
       } else {
         ctx.strokeStyle = "#000000";
-        ctx.strokeRect(xpos, ypos, 40, 40);
+        ctx.strokeRect(xpos, ypos, 80, 80);
       }
-      /// Increment x pointer by 40px after every iteration
-      xpos += 40;
+      /// Increment x pointer by 80px after every iteration
+      xpos += 80;
     }
-    /// Increment y pointer by 40px after every iteration
-    ypos += 40;
+    /// Increment y pointer by 80px after every iteration
+    ypos += 80;
   }
 };
 
