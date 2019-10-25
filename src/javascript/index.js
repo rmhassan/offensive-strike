@@ -5,15 +5,24 @@ import { drawPlayer, drawWeapon } from "./component/draw";
 import Player from "./component/player";
 import Weapons from "./component/weapons";
 
-const m4 = new Weapons("#27ae60", 90, 1);
-const g3 = new Weapons("#f39c12", 60, 2);
-const ump = new Weapons("#8e44ad", 50, 3);
-const kar98 = new Weapons("#c0392b", 95, 4);
+const coconut = document.querySelector("#coconut");
+const lemon = document.querySelector("#lemon");
+const donut = document.querySelector("#donut");
+const cupcake = document.querySelector("#cupcake");
+
+const m4 = new Weapons(coconut, 90, 1);
+const g3 = new Weapons(lemon, 60, 2);
+const ump = new Weapons(cupcake, 50, 3);
+const kar98 = new Weapons(donut, 95, 4);
 const weaponPosition = [m4, g3, ump, kar98];
-drawWeapon(m4);
-drawWeapon(g3);
-drawWeapon(ump);
-drawWeapon(kar98);
+console.log(weaponPosition);
+
+setTimeout(() => {
+  drawWeapon(m4);
+  drawWeapon(g3);
+  drawWeapon(ump);
+  drawWeapon(kar98);
+}, 500);
 const offset = 80;
 const padding = 20;
 const arrowKeysCode = {
