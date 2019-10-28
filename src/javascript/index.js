@@ -6,10 +6,12 @@ import Player from "./component/player";
 import Weapons from "./component/weapons";
 
 const p1 = document.querySelector("#player1");
+const p2 = document.querySelector("#player2");
 const coconut = document.querySelector("#coconut");
 const lemon = document.querySelector("#lemon");
 const donut = document.querySelector("#donut");
 const cupcake = document.querySelector("#cupcake");
+let turn = 1;
 
 const m4 = new Weapons(coconut, 90, 1);
 const g3 = new Weapons(lemon, 60, 2);
@@ -47,6 +49,7 @@ drawGrid();
 
 // Create new Player
 const player1 = new Player(p1, 100);
+const player2 = new Player(p2, 100);
 
 // Clear cell when player leaves
 const clearCell = player => {
@@ -85,117 +88,152 @@ const updateWeapon = weaponIndex => {
 };
 // Draw player to canvas
 drawPlayer(player1);
+drawPlayer(player2);
 
+const moveLeft = player => {
+  clearCell(player);
+  player.position.x -= offset;
+  player.indexPosition.col -= 1;
+  let weaponIndex = chkWeapon();
+  if (weaponIndex > -1) {
+    updateWeapon(weaponIndex, previousPosition);
+  } else {
+    drawPlayer(player);
+  }
+};
+const moveUp = player => {
+  clearCell(player);
+  player.position.y -= offset;
+  player.indexPosition.row -= 1;
+  let weaponIndex = chkWeapon();
+  if (weaponIndex > -1) {
+    updateWeapon(weaponIndex, previousPosition);
+  } else {
+    drawPlayer(player);
+  }
+};
+const moveRight = player => {
+  {
+    clearCell(player);
+
+    player.position.x += offset;
+    player.indexPosition.col += 1;
+    let weaponIndex = chkWeapon();
+    if (weaponIndex > -1) {
+      updateWeapon(weaponIndex, previousPosition);
+    } else {
+      drawPlayer(player);
+    }
+  }
+};
+const moveDown = player => {
+  {
+    clearCell(player);
+
+    player.position.y += offset;
+    player.indexPosition.row += 1;
+    let weaponIndex = chkWeapon();
+    if (weaponIndex > -1) {
+      updateWeapon(weaponIndex, previousPosition);
+    } else {
+      drawPlayer(player);
+    }
+  }
+};
 // Event listener for the arrow keys
 window.addEventListener("keydown", e => {
   switch (e.keyCode) {
     case arrowKeysCode.left:
-      if (
-        !mapArray[player1.indexPosition.row][player1.indexPosition.col - 1] &&
-        player1.indexPosition.col > 0
-      ) {
-        previousPosition = {
-          canvasPosition: {
-            x: player1.position.x,
-            y: player1.position.y
-          },
-          indexPosition: {
-            row: player1.indexPosition.row,
-            col: player1.indexPosition.col
-          }
-        };
-
-        clearCell(player1);
-
-        player1.position.x -= offset;
-        player1.indexPosition.col -= 1;
-        let weaponIndex = chkWeapon();
-        if (weaponIndex > -1) {
-          updateWeapon(weaponIndex, previousPosition);
+      if (turn === 1) {
+        if (
+          !mapArray[player1.indexPosition.row][player1.indexPosition.col - 1] &&
+          player1.indexPosition.col > 0
+        ) {
+          moveLeft(player1);
+          turn = 2;
         } else {
-          drawPlayer(player1);
+          turn = 1;
+        }
+      } else if (turn === 2) {
+        if (
+          !mapArray[player2.indexPosition.row][player2.indexPosition.col - 1] &&
+          player2.indexPosition.col > 0
+        ) {
+          moveLeft(player2);
+          turn = 1;
+        } else {
+          turn = 2;
         }
       }
       break;
     case arrowKeysCode.up:
-      if (
-        !mapArray[player1.indexPosition.row - 1][player1.indexPosition.col] &&
-        player1.indexPosition.row > 0
-      ) {
-        previousPosition = {
-          canvasPosition: {
-            x: player1.position.x,
-            y: player1.position.y
-          },
-          indexPosition: {
-            row: player1.indexPosition.row,
-            col: player1.indexPosition.col
-          }
-        };
-        clearCell(player1);
-
-        player1.position.y -= offset;
-        player1.indexPosition.row -= 1;
-        let weaponIndex = chkWeapon();
-        if (weaponIndex > -1) {
-          updateWeapon(weaponIndex, previousPosition);
+      if (turn === 1) {
+        if (
+          !mapArray[player1.indexPosition.row - 1][player1.indexPosition.col] &&
+          player1.indexPosition.row > 0
+        ) {
+          moveUp(player1);
+          turn = 2;
         } else {
-          drawPlayer(player1);
+          turn = 1;
+        }
+      } else if (turn === 2) {
+        if (
+          !mapArray[player2.indexPosition.row - 1][player2.indexPosition.col] &&
+          player2.indexPosition.row > 0
+        ) {
+          moveUp(player2);
+          turn = 1;
+        } else {
+          turn = 2;
         }
       }
       break;
     case arrowKeysCode.right:
-      if (
-        !mapArray[player1.indexPosition.row][player1.indexPosition.col + 1] &&
-        player1.indexPosition.col <
-          mapArray[player1.indexPosition.row].length - 1
-      ) {
-        previousPosition = {
-          canvasPosition: {
-            x: player1.position.x,
-            y: player1.position.y
-          },
-          indexPosition: {
-            row: player1.indexPosition.row,
-            col: player1.indexPosition.col
-          }
-        };
-        clearCell(player1);
-
-        player1.position.x += offset;
-        player1.indexPosition.col += 1;
-        let weaponIndex = chkWeapon();
-        if (weaponIndex > -1) {
-          updateWeapon(weaponIndex, previousPosition);
+      if (turn === 1) {
+        if (
+          !mapArray[player1.indexPosition.row][player1.indexPosition.col + 1] &&
+          player1.indexPosition.col <
+            mapArray[player1.indexPosition.row].length - 1
+        ) {
+          moveRight(player1);
+          turn = 2;
         } else {
-          drawPlayer(player1);
+          turn = 1;
+        }
+      } else if (turn === 2) {
+        if (
+          !mapArray[player2.indexPosition.row][player2.indexPosition.col + 1] &&
+          player2.indexPosition.col <
+            mapArray[player2.indexPosition.row].length - 1
+        ) {
+          moveRight(player2);
+          turn = 1;
+        } else {
+          turn = 2;
         }
       }
       break;
     case arrowKeysCode.down:
-      if (
-        !mapArray[player1.indexPosition.row + 1][player1.indexPosition.col] &&
-        player1.indexPosition.row < mapArray.length - 1
-      ) {
-        previousPosition = {
-          canvasPosition: {
-            x: player1.position.x,
-            y: player1.position.y
-          },
-          indexPosition: {
-            row: player1.indexPosition.row,
-            col: player1.indexPosition.col
-          }
-        };
-        clearCell(player1);
-
-        player1.position.y += offset;
-        player1.indexPosition.row += 1;
-        let weaponIndex = chkWeapon();
-        if (weaponIndex > -1) {
-          updateWeapon(weaponIndex, previousPosition);
+      if (turn === 1) {
+        if (
+          !mapArray[player1.indexPosition.row + 1][player1.indexPosition.col] &&
+          player1.indexPosition.row < mapArray.length - 1
+        ) {
+          moveDown(player1);
+          turn = 2;
         } else {
-          drawPlayer(player1);
+          turn = 1;
+        }
+      } else if (turn === 2) {
+        if (
+          !mapArray[player2.indexPosition.row + 1][player2.indexPosition.col] &&
+          player2.indexPosition.row < mapArray.length - 1
+        ) {
+          moveDown(player2);
+          turn = 1;
+        } else {
+          turn = 2;
         }
       }
       break;
