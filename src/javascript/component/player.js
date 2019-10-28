@@ -5,8 +5,8 @@ let maxRow = 8;
 const randomCol = () => Math.floor(Math.random() * (maxCol - min + 1)) + min;
 const randomRow = () => Math.floor(Math.random() * (maxRow - min + 1)) + min;
 class Player {
-  constructor(color, damage, weapon = {}) {
-    this.color = color;
+  constructor(img, damage, weapon = {}) {
+    this.img = img;
     this.damage = damage;
     this.hasWeapon = false;
     this.weapon = weapon;
@@ -48,9 +48,11 @@ class Player {
     };
     this.init();
   }
-  updatePlayerProperties(color, damage) {
-    this.color = color;
-    this.damage += damage;
+  updatePlayerProperties(damage) {
+    if (this.hasWeapon) {
+      this.damage = damage + 100;
+    }
+    console.log(this.damage);
   }
   updatePlayerWeapon(weapon) {
     this.weapon = weapon;

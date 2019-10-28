@@ -5,6 +5,7 @@ import { drawPlayer, drawWeapon } from "./component/draw";
 import Player from "./component/player";
 import Weapons from "./component/weapons";
 
+const p1 = document.querySelector("#player1");
 const coconut = document.querySelector("#coconut");
 const lemon = document.querySelector("#lemon");
 const donut = document.querySelector("#donut");
@@ -15,7 +16,6 @@ const g3 = new Weapons(lemon, 60, 2);
 const ump = new Weapons(cupcake, 50, 3);
 const kar98 = new Weapons(donut, 95, 4);
 const weaponPosition = [m4, g3, ump, kar98];
-console.log(weaponPosition);
 
 setTimeout(() => {
   drawWeapon(m4);
@@ -25,6 +25,16 @@ setTimeout(() => {
 }, 500);
 const offset = 80;
 const padding = 20;
+let previousPosition = {
+  canvasPosition: {
+    x: 0,
+    y: 0
+  },
+  indexPosition: {
+    row: 0,
+    col: 0
+  }
+};
 const arrowKeysCode = {
   left: 37,
   up: 38,
@@ -36,9 +46,15 @@ const arrowKeysCode = {
 drawGrid();
 
 // Create new Player
-const player1 = new Player("#34495e", 100);
+const player1 = new Player(p1, 100);
 
+// Clear cell when player leaves
+const clearCell = player => {
+  ctx.clearRect(player.position.x + 5, player.position.y + 5, 70, 70);
+};
 const chkWeapon = () => {
+  console.log(previousPosition);
+
   return weaponPosition.findIndex(weapon => {
     return (
       player1.indexPosition.row === weapon.indexPosition.row &&
@@ -49,13 +65,14 @@ const chkWeapon = () => {
 /// Update weapon
 const updateWeapon = weaponIndex => {
   let weapon = weaponPosition[weaponIndex];
-  player1.updatePlayerProperties(weapon.color, weapon.damage);
+  player1.updatePlayerProperties(weapon.damage);
+
   // if (player1.hasWeapon) {
-  //   weaponPosition.push(player1.weapon);
-  //   weaponPosition.splice(weaponIndex, 1);
+  //   // weaponPosition.push(player1.weapon);
+  //   // weaponPosition.splice(weaponIndex, 1);
   //   player1.weapon.updateWeaponPosition(
-  //     player1.position,
-  //     player1.indexPosition
+  //     previousPosition.canvasPosition,
+  //     previousPosition.indexPosition
   //   );
   //   drawPlayer(player1);
   //   drawWeapon(player1.weapon);
@@ -64,7 +81,6 @@ const updateWeapon = weaponIndex => {
   //   player1.updateWeaponState();
   //   player1.updatePlayerWeapon(weapon);
   //   weaponPosition.splice(weaponIndex, 1);
-  //   console.log(weaponPosition);
   // }
 };
 // Draw player to canvas
@@ -78,18 +94,24 @@ window.addEventListener("keydown", e => {
         !mapArray[player1.indexPosition.row][player1.indexPosition.col - 1] &&
         player1.indexPosition.col > 0
       ) {
-        ctx.clearRect(
-          player1.position.x + padding,
-          player1.position.y + padding,
-          50,
-          50
-        );
+        previousPosition = {
+          canvasPosition: {
+            x: player1.position.x,
+            y: player1.position.y
+          },
+          indexPosition: {
+            row: player1.indexPosition.row,
+            col: player1.indexPosition.col
+          }
+        };
+
+        clearCell(player1);
+
         player1.position.x -= offset;
         player1.indexPosition.col -= 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
-          updateWeapon(weaponIndex);
-          drawPlayer(player1);
+          updateWeapon(weaponIndex, previousPosition);
         } else {
           drawPlayer(player1);
         }
@@ -100,18 +122,23 @@ window.addEventListener("keydown", e => {
         !mapArray[player1.indexPosition.row - 1][player1.indexPosition.col] &&
         player1.indexPosition.row > 0
       ) {
-        ctx.clearRect(
-          player1.position.x + padding,
-          player1.position.y + padding,
-          50,
-          50
-        );
+        previousPosition = {
+          canvasPosition: {
+            x: player1.position.x,
+            y: player1.position.y
+          },
+          indexPosition: {
+            row: player1.indexPosition.row,
+            col: player1.indexPosition.col
+          }
+        };
+        clearCell(player1);
+
         player1.position.y -= offset;
         player1.indexPosition.row -= 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
-          updateWeapon(weaponIndex);
-          drawPlayer(player1);
+          updateWeapon(weaponIndex, previousPosition);
         } else {
           drawPlayer(player1);
         }
@@ -123,18 +150,23 @@ window.addEventListener("keydown", e => {
         player1.indexPosition.col <
           mapArray[player1.indexPosition.row].length - 1
       ) {
-        ctx.clearRect(
-          player1.position.x + padding,
-          player1.position.y + padding,
-          50,
-          50
-        );
+        previousPosition = {
+          canvasPosition: {
+            x: player1.position.x,
+            y: player1.position.y
+          },
+          indexPosition: {
+            row: player1.indexPosition.row,
+            col: player1.indexPosition.col
+          }
+        };
+        clearCell(player1);
+
         player1.position.x += offset;
         player1.indexPosition.col += 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
-          updateWeapon(weaponIndex);
-          drawPlayer(player1);
+          updateWeapon(weaponIndex, previousPosition);
         } else {
           drawPlayer(player1);
         }
@@ -145,18 +177,23 @@ window.addEventListener("keydown", e => {
         !mapArray[player1.indexPosition.row + 1][player1.indexPosition.col] &&
         player1.indexPosition.row < mapArray.length - 1
       ) {
-        ctx.clearRect(
-          player1.position.x + padding,
-          player1.position.y + padding,
-          50,
-          50
-        );
+        previousPosition = {
+          canvasPosition: {
+            x: player1.position.x,
+            y: player1.position.y
+          },
+          indexPosition: {
+            row: player1.indexPosition.row,
+            col: player1.indexPosition.col
+          }
+        };
+        clearCell(player1);
+
         player1.position.y += offset;
         player1.indexPosition.row += 1;
         let weaponIndex = chkWeapon();
         if (weaponIndex > -1) {
-          updateWeapon(weaponIndex);
-          drawPlayer(player1);
+          updateWeapon(weaponIndex, previousPosition);
         } else {
           drawPlayer(player1);
         }

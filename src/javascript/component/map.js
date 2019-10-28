@@ -3,17 +3,6 @@ let min = 0;
 let max = 9;
 const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 
-// const arrowKeysCode = {
-//   left: 37,
-//   up: 38,
-//   right: 39,
-//   down: 80
-// };
-// let playerPosition = {
-//   x: 0,
-//   y: 0
-// };
-// let playerIndexPosition = { row: 0, col: 0 };
 let random_boolean = () => Math.random() <= 0.1;
 // Initiate Canvas board
 let canvas = document.querySelector("#canvas");
