@@ -12,6 +12,7 @@ const lemon = document.querySelector("#lemon");
 const donut = document.querySelector("#donut");
 const cupcake = document.querySelector("#cupcake");
 let turn = 1;
+let tileSize = 80;
 
 const m4 = new Weapons(coconut, 90, 1);
 const g3 = new Weapons(lemon, 60, 2);
@@ -50,14 +51,13 @@ drawGrid();
 // Create new Player
 const player1 = new Player(p1, 100);
 const player2 = new Player(p2, 100);
+console.log(player1, player2);
 
 // Clear cell when player leaves
 const clearCell = player => {
   ctx.clearRect(player.position.x + 5, player.position.y + 5, 70, 70);
 };
 const chkWeapon = () => {
-  console.log(previousPosition);
-
   return weaponPosition.findIndex(weapon => {
     return (
       player1.indexPosition.row === weapon.indexPosition.row &&
@@ -90,10 +90,19 @@ const updateWeapon = weaponIndex => {
 drawPlayer(player1);
 drawPlayer(player2);
 
+function areClose(a, b) {
+  console.log(a.position, b.position);
+  return (
+    Math.abs(a.position.x - b.position.x) < 2 * tileSize &&
+    Math.abs(a.position.y - b.position.y) < 2 * tileSize
+  );
+}
 const moveLeft = player => {
   clearCell(player);
   player.position.x -= offset;
   player.indexPosition.col -= 1;
+  console.log(areClose(player1, player2));
+
   let weaponIndex = chkWeapon();
   if (weaponIndex > -1) {
     updateWeapon(weaponIndex, previousPosition);
@@ -105,6 +114,8 @@ const moveUp = player => {
   clearCell(player);
   player.position.y -= offset;
   player.indexPosition.row -= 1;
+  console.log(areClose(player1, player2));
+
   let weaponIndex = chkWeapon();
   if (weaponIndex > -1) {
     updateWeapon(weaponIndex, previousPosition);
@@ -118,6 +129,8 @@ const moveRight = player => {
 
     player.position.x += offset;
     player.indexPosition.col += 1;
+    console.log(areClose(player1, player2));
+
     let weaponIndex = chkWeapon();
     if (weaponIndex > -1) {
       updateWeapon(weaponIndex, previousPosition);
@@ -132,6 +145,8 @@ const moveDown = player => {
 
     player.position.y += offset;
     player.indexPosition.row += 1;
+    console.log(areClose(player1, player2));
+
     let weaponIndex = chkWeapon();
     if (weaponIndex > -1) {
       updateWeapon(weaponIndex, previousPosition);
