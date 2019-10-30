@@ -2,6 +2,7 @@ import "../sass/main.scss";
 // import "./component/map";
 import drawGrid, { mapArray, ctx } from "./component/map";
 import { drawPlayer, drawWeapon } from "./component/draw";
+import startFight from "./component/fight";
 import Player from "./component/player";
 import Weapons from "./component/weapons";
 
@@ -11,9 +12,12 @@ const coconut = document.querySelector("#coconut");
 const lemon = document.querySelector("#lemon");
 const donut = document.querySelector("#donut");
 const cupcake = document.querySelector("#cupcake");
-let turn = 1;
+let playerTurn = 1;
 let tileSize = 80;
 
+const setTurn = value => {
+  playerTurn = value;
+};
 const m4 = new Weapons(coconut, 90, 1);
 const g3 = new Weapons(lemon, 60, 2);
 const ump = new Weapons(cupcake, 50, 3);
@@ -51,7 +55,6 @@ drawGrid();
 // Create new Player
 const player1 = new Player(p1, 100);
 const player2 = new Player(p2, 100);
-console.log(player1, player2);
 
 // Clear cell when player leaves
 const clearCell = player => {
@@ -66,9 +69,10 @@ const chkWeapon = () => {
   });
 };
 /// Update weapon
-const updateWeapon = weaponIndex => {
+const updateWeapon = (weaponIndex, player) => {
   let weapon = weaponPosition[weaponIndex];
-  player1.updatePlayerProperties(weapon.damage);
+  player.updatePlayerProperties(weapon.damage);
+  player.updateWeaponState();
 
   // if (player1.hasWeapon) {
   //   // weaponPosition.push(player1.weapon);
@@ -91,7 +95,6 @@ drawPlayer(player1);
 drawPlayer(player2);
 
 function areClose(a, b) {
-  console.log(a.position, b.position);
   return (
     Math.abs(a.position.x - b.position.x) < 2 * tileSize &&
     Math.abs(a.position.y - b.position.y) < 2 * tileSize
@@ -101,11 +104,13 @@ const moveLeft = player => {
   clearCell(player);
   player.position.x -= offset;
   player.indexPosition.col -= 1;
-  console.log(areClose(player1, player2));
+  if (areClose(player1, player2)) {
+    startFight(player1, player2, playerTurn);
+  }
 
   let weaponIndex = chkWeapon();
   if (weaponIndex > -1) {
-    updateWeapon(weaponIndex, previousPosition);
+    updateWeapon(weaponIndex, player);
   } else {
     drawPlayer(player);
   }
@@ -114,11 +119,13 @@ const moveUp = player => {
   clearCell(player);
   player.position.y -= offset;
   player.indexPosition.row -= 1;
-  console.log(areClose(player1, player2));
+  if (areClose(player1, player2)) {
+    startFight(player1, player2, playerTurn);
+  }
 
   let weaponIndex = chkWeapon();
   if (weaponIndex > -1) {
-    updateWeapon(weaponIndex, previousPosition);
+    updateWeapon(weaponIndex, player);
   } else {
     drawPlayer(player);
   }
@@ -129,11 +136,13 @@ const moveRight = player => {
 
     player.position.x += offset;
     player.indexPosition.col += 1;
-    console.log(areClose(player1, player2));
+    if (areClose(player1, player2)) {
+      startFight(player1, player2, playerTurn);
+    }
 
     let weaponIndex = chkWeapon();
     if (weaponIndex > -1) {
-      updateWeapon(weaponIndex, previousPosition);
+      updateWeapon(weaponIndex, player);
     } else {
       drawPlayer(player);
     }
@@ -145,11 +154,13 @@ const moveDown = player => {
 
     player.position.y += offset;
     player.indexPosition.row += 1;
-    console.log(areClose(player1, player2));
+    if (areClose(player1, player2)) {
+      startFight(player1, player2, playerTurn);
+    }
 
     let weaponIndex = chkWeapon();
     if (weaponIndex > -1) {
-      updateWeapon(weaponIndex, previousPosition);
+      updateWeapon(weaponIndex, player);
     } else {
       drawPlayer(player);
     }
@@ -159,100 +170,100 @@ const moveDown = player => {
 window.addEventListener("keydown", e => {
   switch (e.keyCode) {
     case arrowKeysCode.left:
-      if (turn === 1) {
+      if (playerTurn === 1) {
         if (
           !mapArray[player1.indexPosition.row][player1.indexPosition.col - 1] &&
           player1.indexPosition.col > 0
         ) {
+          playerTurn = 2;
           moveLeft(player1);
-          turn = 2;
         } else {
-          turn = 1;
+          playerTurn = 1;
         }
-      } else if (turn === 2) {
+      } else if (playerTurn === 2) {
         if (
           !mapArray[player2.indexPosition.row][player2.indexPosition.col - 1] &&
           player2.indexPosition.col > 0
         ) {
+          playerTurn = 1;
           moveLeft(player2);
-          turn = 1;
         } else {
-          turn = 2;
+          playerTurn = 2;
         }
       }
       break;
     case arrowKeysCode.up:
-      if (turn === 1) {
+      if (playerTurn === 1) {
         if (
           !mapArray[player1.indexPosition.row - 1][player1.indexPosition.col] &&
           player1.indexPosition.row > 0
         ) {
+          playerTurn = 2;
           moveUp(player1);
-          turn = 2;
         } else {
-          turn = 1;
+          playerTurn = 1;
         }
-      } else if (turn === 2) {
+      } else if (playerTurn === 2) {
         if (
           !mapArray[player2.indexPosition.row - 1][player2.indexPosition.col] &&
           player2.indexPosition.row > 0
         ) {
+          playerTurn = 1;
           moveUp(player2);
-          turn = 1;
         } else {
-          turn = 2;
+          playerTurn = 2;
         }
       }
       break;
     case arrowKeysCode.right:
-      if (turn === 1) {
+      if (playerTurn === 1) {
         if (
           !mapArray[player1.indexPosition.row][player1.indexPosition.col + 1] &&
           player1.indexPosition.col <
             mapArray[player1.indexPosition.row].length - 1
         ) {
+          playerTurn = 2;
           moveRight(player1);
-          turn = 2;
         } else {
-          turn = 1;
+          playerTurn = 1;
         }
-      } else if (turn === 2) {
+      } else if (playerTurn === 2) {
         if (
           !mapArray[player2.indexPosition.row][player2.indexPosition.col + 1] &&
           player2.indexPosition.col <
             mapArray[player2.indexPosition.row].length - 1
         ) {
+          playerTurn = 1;
           moveRight(player2);
-          turn = 1;
         } else {
-          turn = 2;
+          playerTurn = 2;
         }
       }
       break;
     case arrowKeysCode.down:
-      if (turn === 1) {
+      if (playerTurn === 1) {
         if (
           !mapArray[player1.indexPosition.row + 1][player1.indexPosition.col] &&
           player1.indexPosition.row < mapArray.length - 1
         ) {
+          playerTurn = 2;
           moveDown(player1);
-          turn = 2;
         } else {
-          turn = 1;
+          playerTurn = 1;
         }
-      } else if (turn === 2) {
+      } else if (playerTurn === 2) {
         if (
           !mapArray[player2.indexPosition.row + 1][player2.indexPosition.col] &&
           player2.indexPosition.row < mapArray.length - 1
         ) {
+          playerTurn = 1;
           moveDown(player2);
-          turn = 1;
         } else {
-          turn = 2;
+          playerTurn = 2;
         }
       }
       break;
   }
 });
 
-export { padding };
+export { padding, player1, player2, playerTurn, setTurn };

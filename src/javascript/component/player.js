@@ -5,9 +5,10 @@ let maxRow = 8;
 const randomCol = () => Math.floor(Math.random() * (maxCol - min + 1)) + min;
 const randomRow = () => Math.floor(Math.random() * (maxRow - min + 1)) + min;
 class Player {
-  constructor(img, damage, weapon = {}) {
+  constructor(img, damage, health = 100, weapon = {}) {
     this.img = img;
     this.damage = damage;
+    this.health = health;
     this.hasWeapon = false;
     this.weapon = weapon;
     this.position = {
@@ -51,6 +52,8 @@ class Player {
   updatePlayerProperties(damage) {
     if (this.hasWeapon) {
       this.damage = damage + 100;
+    } else {
+      this.damage += damage;
     }
     console.log(this.damage);
   }
@@ -59,6 +62,9 @@ class Player {
   }
   updateWeaponState() {
     this.hasWeapon = true;
+  }
+  updateHealth(health) {
+    this.health -= health;
   }
 }
 
