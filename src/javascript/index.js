@@ -8,20 +8,18 @@ import Weapons from "./component/weapons";
 
 const p1 = document.querySelector("#player1");
 const p2 = document.querySelector("#player2");
-const coconut = document.querySelector("#coconut");
-const lemon = document.querySelector("#lemon");
-const donut = document.querySelector("#donut");
-const cupcake = document.querySelector("#cupcake");
+const knife = document.querySelector("#knife");
+
 let playerTurn = 1;
 let tileSize = 80;
 
 const setTurn = value => {
   playerTurn = value;
 };
-const m4 = new Weapons(coconut, 90, 1);
-const g3 = new Weapons(lemon, 60, 2);
-const ump = new Weapons(cupcake, 50, 3);
-const kar98 = new Weapons(donut, 95, 4);
+const m4 = new Weapons(knife, 90, 1);
+const g3 = new Weapons(knife, 60, 2);
+const ump = new Weapons(knife, 50, 3);
+const kar98 = new Weapons(knife, 95, 4);
 const weaponPosition = [m4, g3, ump, kar98];
 
 setTimeout(() => {
