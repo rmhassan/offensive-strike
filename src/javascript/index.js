@@ -5,6 +5,7 @@ import { drawPlayer, drawWeapon } from "./component/draw";
 import startFight from "./component/fight";
 import Player from "./component/player";
 import Weapons from "./component/weapons";
+import { updateWeaponUI, updateTurn } from "./component/dom";
 
 const p1 = document.querySelector("#player1");
 const p2 = document.querySelector("#player2");
@@ -51,18 +52,18 @@ const arrowKeysCode = {
 drawGrid();
 
 // Create new Player
-const player1 = new Player(p1, 100);
-const player2 = new Player(p2, 100);
+const player1 = new Player(1, p1, 100);
+const player2 = new Player(2, p2, 100);
 
 // Clear cell when player leaves
 const clearCell = player => {
   ctx.clearRect(player.position.x + 5, player.position.y + 5, 70, 70);
 };
-const chkWeapon = () => {
+const chkWeapon = player => {
   return weaponPosition.findIndex(weapon => {
     return (
-      player1.indexPosition.row === weapon.indexPosition.row &&
-      player1.indexPosition.col === weapon.indexPosition.col
+      player.indexPosition.row === weapon.indexPosition.row &&
+      player.indexPosition.col === weapon.indexPosition.col
     );
   });
 };
@@ -70,23 +71,15 @@ const chkWeapon = () => {
 const updateWeapon = (weaponIndex, player) => {
   let weapon = weaponPosition[weaponIndex];
   player.updatePlayerProperties(weapon.damage);
-  player.updateWeaponState();
+  updateWeaponUI(player);
 
-  // if (player1.hasWeapon) {
-  //   // weaponPosition.push(player1.weapon);
-  //   // weaponPosition.splice(weaponIndex, 1);
-  //   player1.weapon.updateWeaponPosition(
-  //     previousPosition.canvasPosition,
-  //     previousPosition.indexPosition
-  //   );
-  //   drawPlayer(player1);
-  //   drawWeapon(player1.weapon);
-  //   player1.updatePlayerWeapon(weapon);
-  // } else {
-  //   player1.updateWeaponState();
-  //   player1.updatePlayerWeapon(weapon);
-  //   weaponPosition.splice(weaponIndex, 1);
-  // }
+  if (player.hasWeapon) {
+    let oldWeapon = player.weapon;
+    player.updatePlayerWeapon(weapon);
+  } else {
+    player.updateWeaponState();
+    player.updatePlayerWeapon(weapon);
+  }
 };
 // Draw player to canvas
 drawPlayer(player1);
@@ -99,6 +92,7 @@ function areClose(a, b) {
   );
 }
 const moveLeft = player => {
+  console.log(player);
   clearCell(player);
   player.position.x -= offset;
   player.indexPosition.col -= 1;
@@ -106,9 +100,11 @@ const moveLeft = player => {
     startFight(player1, player2, playerTurn);
   }
 
-  let weaponIndex = chkWeapon();
+  let weaponIndex = chkWeapon(player);
   if (weaponIndex > -1) {
+    console.log(player, weaponIndex);
     updateWeapon(weaponIndex, player);
+    drawPlayer(player);
   } else {
     drawPlayer(player);
   }
@@ -121,9 +117,10 @@ const moveUp = player => {
     startFight(player1, player2, playerTurn);
   }
 
-  let weaponIndex = chkWeapon();
+  let weaponIndex = chkWeapon(player);
   if (weaponIndex > -1) {
     updateWeapon(weaponIndex, player);
+    drawPlayer(player);
   } else {
     drawPlayer(player);
   }
@@ -138,9 +135,10 @@ const moveRight = player => {
       startFight(player1, player2, playerTurn);
     }
 
-    let weaponIndex = chkWeapon();
+    let weaponIndex = chkWeapon(player);
     if (weaponIndex > -1) {
       updateWeapon(weaponIndex, player);
+      drawPlayer(player);
     } else {
       drawPlayer(player);
     }
@@ -156,9 +154,10 @@ const moveDown = player => {
       startFight(player1, player2, playerTurn);
     }
 
-    let weaponIndex = chkWeapon();
+    let weaponIndex = chkWeapon(player);
     if (weaponIndex > -1) {
       updateWeapon(weaponIndex, player);
+      drawPlayer(player);
     } else {
       drawPlayer(player);
     }
@@ -174,6 +173,7 @@ window.addEventListener("keydown", e => {
           player1.indexPosition.col > 0
         ) {
           playerTurn = 2;
+          updateTurn(playerTurn);
           moveLeft(player1);
         } else {
           playerTurn = 1;
@@ -184,6 +184,8 @@ window.addEventListener("keydown", e => {
           player2.indexPosition.col > 0
         ) {
           playerTurn = 1;
+          updateTurn(playerTurn);
+
           moveLeft(player2);
         } else {
           playerTurn = 2;
@@ -197,6 +199,8 @@ window.addEventListener("keydown", e => {
           player1.indexPosition.row > 0
         ) {
           playerTurn = 2;
+          updateTurn(playerTurn);
+
           moveUp(player1);
         } else {
           playerTurn = 1;
@@ -207,6 +211,8 @@ window.addEventListener("keydown", e => {
           player2.indexPosition.row > 0
         ) {
           playerTurn = 1;
+          updateTurn(playerTurn);
+
           moveUp(player2);
         } else {
           playerTurn = 2;
@@ -221,6 +227,8 @@ window.addEventListener("keydown", e => {
             mapArray[player1.indexPosition.row].length - 1
         ) {
           playerTurn = 2;
+          updateTurn(playerTurn);
+
           moveRight(player1);
         } else {
           playerTurn = 1;
@@ -232,6 +240,8 @@ window.addEventListener("keydown", e => {
             mapArray[player2.indexPosition.row].length - 1
         ) {
           playerTurn = 1;
+          updateTurn(playerTurn);
+
           moveRight(player2);
         } else {
           playerTurn = 2;
@@ -245,6 +255,8 @@ window.addEventListener("keydown", e => {
           player1.indexPosition.row < mapArray.length - 1
         ) {
           playerTurn = 2;
+          updateTurn(playerTurn);
+
           moveDown(player1);
         } else {
           playerTurn = 1;
@@ -255,6 +267,8 @@ window.addEventListener("keydown", e => {
           player2.indexPosition.row < mapArray.length - 1
         ) {
           playerTurn = 1;
+          updateTurn(playerTurn);
+
           moveDown(player2);
         } else {
           playerTurn = 2;
