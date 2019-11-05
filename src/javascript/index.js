@@ -17,10 +17,10 @@ let tileSize = 80;
 const setTurn = value => {
   playerTurn = value;
 };
-const m4 = new Weapons(knife, 90, 1);
-const g3 = new Weapons(knife, 60, 2);
+const m4 = new Weapons(knife, 20, 1);
+const g3 = new Weapons(knife, 10, 2);
 const ump = new Weapons(knife, 50, 3);
-const kar98 = new Weapons(knife, 95, 4);
+const kar98 = new Weapons(knife, 40, 4);
 const weaponPosition = [m4, g3, ump, kar98];
 
 setTimeout(() => {
@@ -52,8 +52,8 @@ const arrowKeysCode = {
 drawGrid();
 
 // Create new Player
-const player1 = new Player(1, p1, 100);
-const player2 = new Player(2, p2, 100);
+const player1 = new Player(1, p1);
+const player2 = new Player(2, p2);
 
 // Clear cell when player leaves
 const clearCell = player => {
@@ -92,7 +92,6 @@ function areClose(a, b) {
   );
 }
 const moveLeft = player => {
-  console.log(player);
   clearCell(player);
   player.position.x -= offset;
   player.indexPosition.col -= 1;
@@ -102,7 +101,6 @@ const moveLeft = player => {
 
   let weaponIndex = chkWeapon(player);
   if (weaponIndex > -1) {
-    console.log(player, weaponIndex);
     updateWeapon(weaponIndex, player);
     drawPlayer(player);
   } else {

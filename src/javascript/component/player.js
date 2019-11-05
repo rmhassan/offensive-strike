@@ -5,7 +5,7 @@ let maxRow = 8;
 const randomCol = () => Math.floor(Math.random() * (maxCol - min + 1)) + min;
 const randomRow = () => Math.floor(Math.random() * (maxRow - min + 1)) + min;
 class Player {
-  constructor(id, img, damage, health = 100, weapon = {}) {
+  constructor(id, img, damage = 10, health = 100, weapon = {}) {
     this.id = id;
     this.img = img;
     this.damage = damage;

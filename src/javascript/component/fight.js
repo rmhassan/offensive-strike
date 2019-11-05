@@ -1,39 +1,33 @@
 import { player1, player2, playerTurn, setTurn } from "../index";
-const fightContainerEl = document.querySelector(".fight__container");
-const playerTurnEl = document.querySelector(".fight__playerTurn");
-const player1HealthEl = document.querySelector(".fight__player1-health");
-const player2HealthEl = document.querySelector(".fight__player2-health");
-const gameOver = document.querySelector(".fight__gameOver");
+import { updateTurn, updateWeaponUI, updateHP } from "../component/dom";
 const fightBtnEl = document.querySelector(".fight__btn");
+const gameOverEl = document.createElement("p");
+const fightBox = document.querySelector(".gameOver");
 
 const startFight = (player1, player2, playerTurn) => {
-  playerTurnEl.innerHTML = `${playerTurn}`;
-  player1HealthEl.innerHTML = `${player1.health}`;
-  player2HealthEl.innerHTML = `${player2.health}`;
-
-  fightContainerEl.classList.add("show");
+  fightBtnEl.disabled = false;
 };
 fightBtnEl.addEventListener("click", () => {
   console.log(player1, player2);
   if (playerTurn === 1) {
-    let attackDamage = (player1.damage / 100) * 20;
+    player2.updateHealth(player1.damage);
+    updateHP(player2);
     setTurn(2);
-    player2.updateHealth(attackDamage);
-    if (player2.health > 0) {
-      startFight(player1, player2, 2);
-    } else {
-      fightBtnEl.disabled = false;
-      gameOver.innerHTML = "<p>Game over Player 1 wins</p>";
+    updateTurn(2);
+    if (player2.health <= 0) {
+      fightBtnEl.setAttribute("disabled", "true");
+      gameOverEl.textContent = `Game Ove, Player 1 wins`;
+      fightBox.appendChild(gameOverEl);
     }
   } else if (playerTurn === 2) {
-    let attackDamage = (player2.damage / 100) * 20;
+    player1.updateHealth(player2.damage);
+    updateHP(player1);
     setTurn(1);
-    player1.updateHealth(attackDamage);
-    if (player1.health > 0) {
-      startFight(player1, player2, 2);
-    } else {
-      fightBtnEl.disabled = false;
-      gameOver.innerHTML = "<p>Game over Player 1 wins</p>";
+    updateTurn(1);
+    if (player1.health <= 0) {
+      fightBtnEl.setAttribute("disabled", "true");
+      gameOverEl.textContent = `Game Ove, Player 2 wins`;
+      fightBox.appendChild(gameOverEl);
     }
   }
 });
