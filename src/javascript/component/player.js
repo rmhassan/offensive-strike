@@ -2,6 +2,7 @@ import { mapArray } from "./map";
 let min = 0;
 let maxCol = 15;
 let maxRow = 8;
+const offset = 80;
 const randomCol = () => Math.floor(Math.random() * (maxCol - min + 1)) + min;
 const randomRow = () => Math.floor(Math.random() * (maxRow - min + 1)) + min;
 class Player {
@@ -50,12 +51,24 @@ class Player {
     };
     this.init();
   }
+  moveLeft() {
+    this.position.x -= offset;
+    this.indexPosition.col -= 1;
+  }
+  moveUp() {
+    this.position.y -= offset;
+    this.indexPosition.row -= 1;
+  }
+  moveRight() {
+    this.position.x += offset;
+    this.indexPosition.col += 1;
+  }
+  moveDown() {
+    this.position.y += offset;
+    this.indexPosition.row += 1;
+  }
   updatePlayerProperties(damage) {
-    if (this.hasWeapon) {
-      this.damage = damage + 100;
-    } else {
-      this.damage += damage;
-    }
+    this.damage = damage;
     console.log(this.damage);
   }
   updatePlayerWeapon(weapon) {

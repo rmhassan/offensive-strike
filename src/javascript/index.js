@@ -31,6 +31,12 @@ setTimeout(() => {
 }, 500);
 const offset = 80;
 const padding = 20;
+let oldWeapon = {
+  indexPosition: {
+    row: 0,
+    col: 0
+  }
+};
 let p1PreviousPosition = {
   canvasPosition: {
     x: 0,
@@ -51,14 +57,53 @@ let p2PreviousPosition = {
     col: 0
   }
 };
-const maintainPreviousPosition = player => {
-  console.log(player);
+const drawOldWeapon = (weapon, player) => {
   if (player.id === 1) {
-    p1PreviousPosition.canvasPosition = player.position;
-    p1PreviousPosition.indexPosition = player.indexPosition;
+    if (
+      weapon.indexPosition.row === p1PreviousPosition.indexPosition.row &&
+      weapon.indexPosition.col === p1PreviousPosition.indexPosition.col
+    ) {
+      drawWeapon(weapon);
+    }
   } else if (player.id === 2) {
-    p2PreviousPosition.canvasPosition = player.position;
-    p2PreviousPosition.indexPosition = player.indexPosition;
+    if (
+      weapon.indexPosition.row === p2PreviousPosition.indexPosition.row &&
+      weapon.indexPosition.col === p2PreviousPosition.indexPosition.col
+    ) {
+      drawWeapon(weapon);
+    }
+  }
+};
+
+const updateOldWeaponPosition = (weapon, player) => {
+  weapon.canvasPosition = {
+    x: player.position.x,
+    y: player.position.y
+  };
+  weapon.indexPosition = {
+    row: player.indexPosition.row,
+    col: player.indexPosition.col
+  };
+};
+const maintainPreviousPosition = player => {
+  if (player.id === 1) {
+    p1PreviousPosition.canvasPosition = {
+      x: player.position.x,
+      y: player.position.y
+    };
+    p1PreviousPosition.indexPosition = {
+      row: player.indexPosition.row,
+      col: player.indexPosition.col
+    };
+  } else if (player.id === 2) {
+    p2PreviousPosition.canvasPosition = {
+      x: player.position.x,
+      y: player.position.y
+    };
+    p2PreviousPosition.indexPosition = {
+      row: player.indexPosition.row,
+      col: player.indexPosition.col
+    };
   }
 };
 const arrowKeysCode = {
@@ -94,9 +139,13 @@ const updateWeapon = (weaponIndex, player) => {
   updateWeaponUI(player);
 
   if (player.hasWeapon) {
-    let oldWeapon = player.weapon;
+    oldWeapon = player.weapon;
+    updateOldWeaponPosition(oldWeapon, player);
+    weaponPosition.push(oldWeapon);
+    weaponPosition.splice(weaponIndex, 1);
     player.updatePlayerWeapon(weapon);
   } else {
+    weaponPosition.splice(weaponIndex, 1);
     player.updateWeaponState();
     player.updatePlayerWeapon(weapon);
   }
@@ -112,12 +161,9 @@ function areClose(a, b) {
   );
 }
 const moveLeft = player => {
-  clearCell(player);
   maintainPreviousPosition(player);
-  player.position.x -= offset;
-  player.indexPosition.col -= 1;
-  console.log(player);
-
+  clearCell(player);
+  player.moveLeft();
   if (areClose(player1, player2)) {
     startFight(player1, player2, playerTurn);
   }
@@ -129,14 +175,13 @@ const moveLeft = player => {
   } else {
     drawPlayer(player);
   }
+  drawOldWeapon(oldWeapon, player);
 };
 const moveUp = player => {
-  clearCell(player);
   maintainPreviousPosition(player);
+  clearCell(player);
 
-  player.position.y -= offset;
-  player.indexPosition.row -= 1;
-  console.log(player);
+  player.moveUp();
 
   if (areClose(player1, player2)) {
     startFight(player1, player2, playerTurn);
@@ -149,16 +194,14 @@ const moveUp = player => {
   } else {
     drawPlayer(player);
   }
+  drawOldWeapon(oldWeapon, player);
 };
 const moveRight = player => {
   {
-    clearCell(player);
     maintainPreviousPosition(player);
+    clearCell(player);
 
-    player.position.x += offset;
-    player.indexPosition.col += 1;
-    console.log(player);
-
+    player.moveRight();
     if (areClose(player1, player2)) {
       startFight(player1, player2, playerTurn);
     }
@@ -170,16 +213,15 @@ const moveRight = player => {
     } else {
       drawPlayer(player);
     }
+    drawOldWeapon(oldWeapon, player);
   }
 };
 const moveDown = player => {
   {
-    clearCell(player);
     maintainPreviousPosition(player);
+    clearCell(player);
+    player.moveDown();
 
-    player.position.y += offset;
-    player.indexPosition.row += 1;
-    console.log(player);
     if (areClose(player1, player2)) {
       startFight(player1, player2, playerTurn);
     }
@@ -191,6 +233,7 @@ const moveDown = player => {
     } else {
       drawPlayer(player);
     }
+    drawOldWeapon(oldWeapon, player);
   }
 };
 // Event listener for the arrow keys
