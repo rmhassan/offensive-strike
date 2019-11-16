@@ -10,6 +10,9 @@ import { updateWeaponUI, updateTurn } from "./component/dom";
 const p1 = document.querySelector("#player1");
 const p2 = document.querySelector("#player2");
 const knife = document.querySelector("#knife");
+const sowrd = document.querySelector("#sowrd");
+const akm = document.querySelector("#akm");
+const p13 = document.querySelector("#p13");
 
 let playerTurn = 1;
 let tileSize = 80;
@@ -18,9 +21,9 @@ const setTurn = value => {
   playerTurn = value;
 };
 const m4 = new Weapons(knife, 20, 1);
-const g3 = new Weapons(knife, 10, 2);
-const ump = new Weapons(knife, 50, 3);
-const kar98 = new Weapons(knife, 40, 4);
+const g3 = new Weapons(akm, 10, 2);
+const ump = new Weapons(sowrd, 50, 3);
+const kar98 = new Weapons(p13, 40, 4);
 const weaponPosition = [m4, g3, ump, kar98];
 
 setTimeout(() => {
