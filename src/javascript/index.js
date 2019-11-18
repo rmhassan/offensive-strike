@@ -21,7 +21,7 @@ const setTurn = value => {
   playerTurn = value;
 };
 const m4 = new Weapons(knife, 20, 1);
-const g3 = new Weapons(akm, 10, 2);
+const g3 = new Weapons(akm, 15, 2);
 const ump = new Weapons(sowrd, 50, 3);
 const kar98 = new Weapons(p13, 40, 4);
 const weaponPosition = [m4, g3, ump, kar98];
@@ -146,6 +146,7 @@ const updateWeapon = (weaponIndex, player) => {
     updateOldWeaponPosition(oldWeapon, player);
     weaponPosition.push(oldWeapon);
     weaponPosition.splice(weaponIndex, 1);
+    console.log(player, weapon, oldWeapon);
     player.updatePlayerWeapon(weapon);
   } else {
     weaponPosition.splice(weaponIndex, 1);
@@ -243,111 +244,135 @@ const moveDown = player => {
 window.addEventListener("keydown", e => {
   switch (e.keyCode) {
     case arrowKeysCode.left:
-      if (playerTurn === 1) {
-        if (
-          !mapArray[player1.indexPosition.row][player1.indexPosition.col - 1] &&
-          player1.indexPosition.col > 0
-        ) {
-          playerTurn = 2;
-          updateTurn(playerTurn);
-          moveLeft(player1);
-        } else {
-          playerTurn = 1;
-        }
-      } else if (playerTurn === 2) {
-        if (
-          !mapArray[player2.indexPosition.row][player2.indexPosition.col - 1] &&
-          player2.indexPosition.col > 0
-        ) {
-          playerTurn = 1;
-          updateTurn(playerTurn);
+      if (!areClose(player1, player2)) {
+        if (playerTurn === 1) {
+          if (
+            !mapArray[player1.indexPosition.row][
+              player1.indexPosition.col - 1
+            ] &&
+            player1.indexPosition.col > 0
+          ) {
+            playerTurn = 2;
+            updateTurn(playerTurn);
+            moveLeft(player1);
+          } else {
+            playerTurn = 1;
+          }
+        } else if (playerTurn === 2) {
+          if (
+            !mapArray[player2.indexPosition.row][
+              player2.indexPosition.col - 1
+            ] &&
+            player2.indexPosition.col > 0
+          ) {
+            playerTurn = 1;
+            updateTurn(playerTurn);
 
-          moveLeft(player2);
-        } else {
-          playerTurn = 2;
+            moveLeft(player2);
+          } else {
+            playerTurn = 2;
+          }
         }
       }
       break;
     case arrowKeysCode.up:
-      if (playerTurn === 1) {
-        if (
-          !mapArray[player1.indexPosition.row - 1][player1.indexPosition.col] &&
-          player1.indexPosition.row > 0
-        ) {
-          playerTurn = 2;
-          updateTurn(playerTurn);
+      if (!areClose(player1, player2)) {
+        if (playerTurn === 1) {
+          if (
+            !mapArray[player1.indexPosition.row - 1][
+              player1.indexPosition.col
+            ] &&
+            player1.indexPosition.row > 0
+          ) {
+            playerTurn = 2;
+            updateTurn(playerTurn);
 
-          moveUp(player1);
-        } else {
-          playerTurn = 1;
-        }
-      } else if (playerTurn === 2) {
-        if (
-          !mapArray[player2.indexPosition.row - 1][player2.indexPosition.col] &&
-          player2.indexPosition.row > 0
-        ) {
-          playerTurn = 1;
-          updateTurn(playerTurn);
+            moveUp(player1);
+          } else {
+            playerTurn = 1;
+          }
+        } else if (playerTurn === 2) {
+          if (
+            !mapArray[player2.indexPosition.row - 1][
+              player2.indexPosition.col
+            ] &&
+            player2.indexPosition.row > 0
+          ) {
+            playerTurn = 1;
+            updateTurn(playerTurn);
 
-          moveUp(player2);
-        } else {
-          playerTurn = 2;
+            moveUp(player2);
+          } else {
+            playerTurn = 2;
+          }
         }
       }
       break;
     case arrowKeysCode.right:
-      if (playerTurn === 1) {
-        if (
-          !mapArray[player1.indexPosition.row][player1.indexPosition.col + 1] &&
-          player1.indexPosition.col <
-            mapArray[player1.indexPosition.row].length - 1
-        ) {
-          playerTurn = 2;
-          updateTurn(playerTurn);
+      if (!areClose(player1, player2)) {
+        if (playerTurn === 1) {
+          if (
+            !mapArray[player1.indexPosition.row][
+              player1.indexPosition.col + 1
+            ] &&
+            player1.indexPosition.col <
+              mapArray[player1.indexPosition.row].length - 1
+          ) {
+            playerTurn = 2;
+            updateTurn(playerTurn);
 
-          moveRight(player1);
-        } else {
-          playerTurn = 1;
-        }
-      } else if (playerTurn === 2) {
-        if (
-          !mapArray[player2.indexPosition.row][player2.indexPosition.col + 1] &&
-          player2.indexPosition.col <
-            mapArray[player2.indexPosition.row].length - 1
-        ) {
-          playerTurn = 1;
-          updateTurn(playerTurn);
+            moveRight(player1);
+          } else {
+            playerTurn = 1;
+          }
+        } else if (playerTurn === 2) {
+          if (
+            !mapArray[player2.indexPosition.row][
+              player2.indexPosition.col + 1
+            ] &&
+            player2.indexPosition.col <
+              mapArray[player2.indexPosition.row].length - 1
+          ) {
+            playerTurn = 1;
+            updateTurn(playerTurn);
 
-          moveRight(player2);
-        } else {
-          playerTurn = 2;
+            moveRight(player2);
+          } else {
+            playerTurn = 2;
+          }
         }
       }
       break;
     case arrowKeysCode.down:
-      if (playerTurn === 1) {
-        if (
-          !mapArray[player1.indexPosition.row + 1][player1.indexPosition.col] &&
-          player1.indexPosition.row < mapArray.length - 1
-        ) {
-          playerTurn = 2;
-          updateTurn(playerTurn);
+      if (!areClose(player1, player2)) {
+        if (playerTurn === 1) {
+          if (
+            !mapArray[player1.indexPosition.row + 1][
+              player1.indexPosition.col
+            ] &&
+            player1.indexPosition.row < mapArray.length - 1
+          ) {
+            playerTurn = 2;
+            updateTurn(playerTurn);
 
-          moveDown(player1);
-        } else {
-          playerTurn = 1;
-        }
-      } else if (playerTurn === 2) {
-        if (
-          !mapArray[player2.indexPosition.row + 1][player2.indexPosition.col] &&
-          player2.indexPosition.row < mapArray.length - 1
-        ) {
-          playerTurn = 1;
-          updateTurn(playerTurn);
+            moveDown(player1);
+          } else {
+            playerTurn = 1;
+          }
+        } else if (playerTurn === 2) {
+          if (
+            !mapArray[player2.indexPosition.row + 1][
+              player2.indexPosition.col
+            ] &&
+            player2.indexPosition.row < mapArray.length - 1
+          ) {
+            playerTurn = 1;
+            updateTurn(playerTurn);
 
-          moveDown(player2);
-        } else {
-          playerTurn = 2;
+            moveDown(player2);
+          } else {
+            playerTurn = 2;
+          }
         }
       }
       break;
