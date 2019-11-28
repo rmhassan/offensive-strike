@@ -1,4 +1,5 @@
 import { mapArray } from "./map";
+import { offset } from "../index";
 let min = 0;
 let maxCol = 15;
 let maxRow = 8;
@@ -27,14 +28,14 @@ export default class Weapons {
         if (rowPosition > 0) {
           // if the row is greater than one increment y pointer 40*noOfRows
           for (let i = 0; i < rowPosition; i++) {
-            this.canvasPosition.y += 80;
+            this.canvasPosition.y += 64;
           }
         }
         // Check if it is first col
         if (colPosition > 0) {
           // if the col is greater than one increment x pointer 40*noOfCols
           for (let j = 0; j < colPosition; j++) {
-            this.canvasPosition.x += 80;
+            this.canvasPosition.x += 64;
           }
         }
         // Updating player index position

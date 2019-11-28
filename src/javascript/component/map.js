@@ -1,3 +1,4 @@
+import { offset } from "../index";
 // get random number
 let min = 0;
 let max = 9;
@@ -6,8 +7,8 @@ const randomNumber = () => Math.floor(Math.random() * (max - min + 1)) + min;
 let random_boolean = () => Math.random() <= 0.1;
 // Initiate Canvas board
 let canvas = document.querySelector("#canvas");
-canvas.width = 1280;
-canvas.height = 720;
+canvas.width = 1030;
+canvas.height = 610;
 let ctx = canvas.getContext("2d");
 
 // This array  decide the box will be blocked or not
@@ -32,16 +33,16 @@ const drawGrid = () => {
       ctx.moveTo(xpos, ypos);
       if (mapArray[i][j] === true) {
         ctx.fillStyle = "#FF0000";
-        ctx.fillRect(xpos, ypos, 80, 80);
+        ctx.fillRect(xpos, ypos, offset, offset);
       } else {
         ctx.strokeStyle = "#000000";
-        ctx.strokeRect(xpos, ypos, 80, 80);
+        ctx.strokeRect(xpos, ypos, offset, offset);
       }
       /// Increment x pointer by 80px after every iteration
-      xpos += 80;
+      xpos += offset;
     }
     /// Increment y pointer by 80px after every iteration
-    ypos += 80;
+    ypos += offset;
   }
 };
 

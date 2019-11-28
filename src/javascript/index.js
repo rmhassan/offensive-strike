@@ -15,7 +15,7 @@ const akm = document.querySelector("#akm");
 const p13 = document.querySelector("#p13");
 
 let playerTurn = 1;
-let tileSize = 80;
+let tileSize = 64;
 
 const setTurn = value => {
   playerTurn = value;
@@ -32,8 +32,8 @@ setTimeout(() => {
   drawWeapon(ump);
   drawWeapon(kar98);
 }, 500);
-const offset = 80;
-const padding = 20;
+const offset = 64;
+const padding = 5;
 let oldWeapon = {
   indexPosition: {
     row: 0,
@@ -125,7 +125,7 @@ const player2 = new Player(2, p2);
 
 // Clear cell when player leaves
 const clearCell = player => {
-  ctx.clearRect(player.position.x + 5, player.position.y + 5, 70, 70);
+  ctx.clearRect(player.position.x + 5, player.position.y + 5, 55, 55);
 };
 const chkWeapon = player => {
   return weaponPosition.findIndex(weapon => {
@@ -139,7 +139,6 @@ const chkWeapon = player => {
 const updateWeapon = (weaponIndex, player) => {
   let weapon = weaponPosition[weaponIndex];
   player.updatePlayerProperties(weapon.damage);
-  updateWeaponUI(player);
 
   if (player.hasWeapon) {
     oldWeapon = player.weapon;
@@ -153,6 +152,7 @@ const updateWeapon = (weaponIndex, player) => {
     player.updateWeaponState();
     player.updatePlayerWeapon(weapon);
   }
+  updateWeaponUI(player);
 };
 // Draw player to canvas
 drawPlayer(player1);
@@ -379,4 +379,4 @@ window.addEventListener("keydown", e => {
   }
 });
 
-export { padding, player1, player2, playerTurn, setTurn };
+export { padding, player1, player2, playerTurn, setTurn, offset };

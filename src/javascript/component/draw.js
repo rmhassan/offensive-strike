@@ -12,6 +12,7 @@ const drawPlayer = player => {
   }, 500);
 };
 const drawWeapon = weapon => {
+  console.log("running", weapon);
   ctx.drawImage(
     weapon.img,
     weapon.canvasPosition.x + 10,

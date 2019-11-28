@@ -16,7 +16,7 @@ fightBtnEl.addEventListener("click", () => {
     updateTurn(2);
     if (player2.health <= 0) {
       fightBtnEl.setAttribute("disabled", "true");
-      gameOverEl.textContent = `Game Ove, Player 1 wins`;
+      gameOverEl.textContent = `Game Over, Player 1 wins`;
       fightBox.appendChild(gameOverEl);
     }
   } else if (playerTurn === 2) {
@@ -26,7 +26,7 @@ fightBtnEl.addEventListener("click", () => {
     updateTurn(1);
     if (player1.health <= 0) {
       fightBtnEl.setAttribute("disabled", "true");
-      gameOverEl.textContent = `Game Ove, Player 2 wins`;
+      gameOverEl.textContent = `Game Over, Player 2 wins`;
       fightBox.appendChild(gameOverEl);
     }
   }

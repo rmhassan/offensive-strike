@@ -1,8 +1,8 @@
 import { mapArray } from "./map";
+import { offset } from "../index";
 let min = 0;
 let maxCol = 15;
 let maxRow = 8;
-const offset = 80;
 const randomCol = () => Math.floor(Math.random() * (maxCol - min + 1)) + min;
 const randomRow = () => Math.floor(Math.random() * (maxRow - min + 1)) + min;
 class Player {
@@ -31,14 +31,14 @@ class Player {
         if (rowPosition > 0) {
           // if the row is greater than one increment y pointer 40*noOfRows
           for (let i = 0; i < rowPosition; i++) {
-            this.position.y += 80;
+            this.position.y += offset;
           }
         }
         // Check if it is first col
         if (colPosition > 0) {
           // if the col is greater than one increment x pointer 40*noOfCols
           for (let j = 0; j < colPosition; j++) {
-            this.position.x += 80;
+            this.position.x += offset;
           }
         }
         // Updating player index position
