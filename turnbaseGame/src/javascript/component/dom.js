@@ -1,4 +1,3 @@
-import "../../../node_modules/animate.css";
 const p1DamageEl = document.querySelector(".player1-damage");
 const p2DamageEl = document.querySelector(".player2-damage");
 const p1WeaponEl = document.querySelector(".player1-weapon");
@@ -9,17 +8,9 @@ const updatePlayer2HP = document.querySelector(".player2-hp");
 
 const updateHP = player => {
   if (player.id === 1) {
-    updatePlayer1HP.classList.add("animated", "bounce");
     updatePlayer1HP.textContent = `${player.health}`;
-    setTimeout(() => {
-      updatePlayer1HP.classList.remove("animated", "bounce");
-    }, 1000);
   } else if (player.id === 2) {
-    updatePlayer2HP.classList.add("animated", "bounce");
     updatePlayer2HP.textContent = `${player.health}`;
-    setTimeout(() => {
-      updatePlayer2HP.classList.remove("animated", "bounce");
-    }, 1000);
   }
 };
 const updateWeaponUI = player => {
