@@ -32,7 +32,7 @@ const drawGrid = () => {
       ctx.beginPath();
       ctx.moveTo(xpos, ypos);
       if (mapArray[i][j] === true) {
-        ctx.fillStyle = "#FF0000";
+        ctx.fillStyle = "#535c68";
         ctx.fillRect(xpos, ypos, offset, offset);
       } else {
         ctx.strokeStyle = "#000000";

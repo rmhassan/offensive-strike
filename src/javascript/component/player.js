@@ -69,7 +69,6 @@ class Player {
   }
   updatePlayerProperties(damage) {
     this.damage = damage;
-    console.log(this.damage);
   }
   updatePlayerWeapon(weapon) {
     this.weapon = weapon;
@@ -78,6 +77,7 @@ class Player {
     this.hasWeapon = true;
   }
   updateHealth(health) {
+    console.log(health);
     this.health -= health;
   }
 }

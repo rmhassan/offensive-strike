@@ -23,7 +23,6 @@ const updateHP = player => {
   }
 };
 const updateWeaponUI = player => {
-  console.log(player.weapon);
   if (player.id === 1) {
     p1DamageEl.textContent = `${player.damage}`;
     p1WeaponEl.innerHTML = player.weapon.img.outerHTML;

@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Turn Base Game</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="bundle.css" />
   </head>
@@ -12,7 +16,7 @@
     <div class="map__container">
       <canvas id="canvas"></canvas>
       <section class="stats">
-        <div class="row stats__content">
+        <div class=" stats__content">
           <div class="player-1">
             <div class="row">
               <p>Player 1</p>
@@ -61,8 +65,9 @@
               <p>Player Turn</p>
               <p class="player__turn">1</p>
             </div>
-            <div class="row">
+            <div class="action__btns">
               <button class="fight__btn" disabled>Attack</button>
+              <button class="defend__btn" disabled>Defend</button>
             </div>
             <div class="row gameOver"></div>
           </div>
